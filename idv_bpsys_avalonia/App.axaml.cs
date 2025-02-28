@@ -3,7 +3,9 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Avalonia.Markup.Xaml;
+using Avalonia.Styling;
 using idv_bpsys_avalonia.ViewModels;
 using idv_bpsys_avalonia.Views;
 
@@ -11,9 +13,11 @@ namespace idv_bpsys_avalonia;
 
 public partial class App : Application
 {
+    public static App AppBase { get; set; }
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        AppBase = this;
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -32,6 +36,15 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
+    public void ChangeTheme()
+    {
+        this.RequestedThemeVariant = 
+            this.RequestedThemeVariant == ThemeVariant.Light 
+                ? ThemeVariant.Dark 
+                : ThemeVariant.Light;
+        
+    }
+    
     private void DisableAvaloniaDataAnnotationValidation()
     {
         // Get an array of plugins to remove

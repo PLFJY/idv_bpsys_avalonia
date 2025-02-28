@@ -1,20 +1,153 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:idv_bpsys_avalonia.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="idv_bpsys_avalonia.Views.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="idv_bpsys_avalonia">
+
+<Window
+    Height="695"
+    Icon="/Assets/icon.ico"
+    MinWidth="1430"
+    Title="idv_bpsys_avalonia"
+    Width="1430"
+    mc:Ignorable="d"
+    x:Class="idv_bpsys_avalonia.Views.MainWindow"
+    x:DataType="vm:MainWindowViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ic="using:FluentIcons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="using:FluentAvalonia.UI.Controls"
+    xmlns:vm="using:idv_bpsys_avalonia.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
+    <Grid RowDefinitions="Auto Auto *">
+        <!--  title bar  -->
+        <Grid Grid.Row="0" Height="32">
+            <StackPanel Orientation="Horizontal">
+                <Image Margin="5,5" Source="/Assets/icon.png" />
+                <TextBlock
+                    Margin="10,0"
+                    Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                    VerticalAlignment="Center" />
+            </StackPanel>
+            <Button
+                Background="{x:Null}"
+                BorderThickness="0"
+                Command="{Binding ThemeChangeCommand}"
+                Height="35"
+                HorizontalAlignment="Right"
+                Margin="0,0,150,0"
+                Width="35">
+                <ui:SymbolIcon Symbol="DarkTheme" />
+            </Button>
+        </Grid>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
+        <!--  global menu  -->
+        <Grid
+            ColumnDefinitions="Auto Auto Auto"
+            Grid.Row="1"
+            Height="100"
+            Margin="10,10,0,10"
+            VerticalAlignment="Center">
+            <!--  current team  -->
+            <Border
+                Background="{DynamicResource CardBackgroundFillColorDefault}"
+                CornerRadius="{StaticResource OverlayCornerRadius}"
+                Padding="5"
+                Width="370">
+                <StackPanel
+                    Grid.Column="0"
+                    Spacing="10"
+                    VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="当前求生者队伍：" />
+                        <TextBlock Text="{Binding CurrentSurTeamName}" />
+                    </StackPanel>
+                    <Button Command="{Binding SwapCommand}" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <ui:SymbolIcon Symbol="Sort" />
+                            <TextBlock Text="换边" />
+                        </StackPanel>
+                    </Button>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="当前监管者队伍：" />
+                        <TextBlock Text="{Binding CurrentHunTeamName}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!--  Game List  -->
+            <StackPanel
+                Grid.Column="1"
+                Margin="10,0,0,0"
+                Orientation="Horizontal"
+                Spacing="10"
+                VerticalAlignment="Center">
+                <Button>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <ui:SymbolIcon FontSize="20" Symbol="SaveLocal" />
+                        <TextBlock Text="保存当前对局到本地" />
+                    </StackPanel>
+                </Button>
+                <Button>
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <ui:SymbolIcon FontSize="20" Symbol="Add" />
+                        <TextBlock Text="新对局 (重置)" />
+                    </StackPanel>
+                </Button>
+                <TextBlock Text="新对局为：" VerticalAlignment="Center" />
+                <ComboBox
+                    ItemsSource="{Binding GameList}"
+                    MaxDropDownHeight="190"
+                    VerticalAlignment="Center"
+                    Width="230" />
+            </StackPanel>
+
+            <!--  Timer  -->
+            <Border
+                Background="{DynamicResource CardBackgroundFillColorDefault}"
+                CornerRadius="{StaticResource OverlayCornerRadius}"
+                Grid.Column="2"
+                Margin="10,0,0,0"
+                Padding="5">
+                <Grid RowDefinitions="Auto *">
+                    <TextBlock Grid.Row="0" Text="计时器(单位：秒)" />
+                    <StackPanel
+                        Grid.Row="1"
+                        Margin="0,10"
+                        Orientation="Horizontal"
+                        Spacing="10"
+                        VerticalAlignment="Center">
+                        <ui:FAComboBox
+                            IsEditable="True"
+                            ItemsSource="{Binding TimerList}"
+                            MaxDropDownHeight="150"
+                            Width="100" />
+                        <Button>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <ui:SymbolIcon Symbol="Play" />
+                                <TextBlock Text="开始" />
+                            </StackPanel>
+                        </Button>
+                        <Button>
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <ui:SymbolIcon Symbol="Stop" />
+                                <TextBlock Text="停止(恢复为VS)" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!--  navigation view  -->
+        <ui:NavigationView
+            Grid.Row="2"
+            IsBackEnabled="False"
+            IsSettingsVisible="False"
+            MenuItemsSource="{Binding MenuItems}"
+            OpenPaneLength="130">
+            <Border CornerRadius="{DynamicResource ControlCornerRadius}" />
+        </ui:NavigationView>
+    </Grid>
 </Window>

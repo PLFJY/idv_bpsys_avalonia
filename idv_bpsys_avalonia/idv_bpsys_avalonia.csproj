@@ -11,6 +11,7 @@
     <ItemGroup>
         <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
+        <Folder Include="Views\FrontWindows\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -24,5 +25,17 @@
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="FluentAvaloniaUI" Version="2.2.0" />
+        <PackageReference Include="FluentIcons.Avalonia.Fluent" Version="1.1.271" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Styles\GroupBoxStyle.axaml" />
+      <UpToDateCheckInput Remove="CustomControls\GroupBox.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Static Data Storage.png" />
+      <None Remove="Static Data Storage.xmind" />
     </ItemGroup>
 </Project>
