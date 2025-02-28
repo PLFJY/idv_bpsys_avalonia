@@ -3,3 +3,6 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+/.idea/.idea.idv_bpsys_avalonia/.idea
+/.vs/idv_bpsys_avalonia
+/idv_bpsys_avalonia/.idea/.idea.idv_bpsys_avalonia.dir/.idea
